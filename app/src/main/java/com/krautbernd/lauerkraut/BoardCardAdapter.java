@@ -15,10 +15,24 @@ public class BoardCardAdapter extends RecyclerView.Adapter<BoardCardAdapter.Boar
     private Context context;
     private ArrayList<BoardCard> boardlist;
 
+    // react to a click on the card
+    private OnItemClicklistener listener;
+
+    public interface OnItemClicklistener{
+        void onItemClick(int position);
+    }
+    //
+
     public BoardCardAdapter(Context context, ArrayList<BoardCard> boardlist) {
         this.context = context;
         this.boardlist = boardlist;
     }
+
+    // react to a click on the card
+    public void setOnItemClickListener(OnItemClicklistener listener){
+        this.listener = listener;
+    }
+    //
 
     @NonNull
     @Override
@@ -56,6 +70,20 @@ public class BoardCardAdapter extends RecyclerView.Adapter<BoardCardAdapter.Boar
             tv_boarduri = itemView.findViewById(R.id.txt_boarduri);
             tv_boardname = itemView.findViewById(R.id.txt_boardname);
             tv_pps = itemView.findViewById(R.id.txt_pps);
+
+            // react to a click on the card
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        int pos = getAdapterPosition();
+                        if (pos != RecyclerView.NO_POSITION){
+                            listener.onItemClick(pos);
+                        }
+                    }
+                }
+            });
+
         }
     }
 }

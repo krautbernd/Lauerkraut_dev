@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,7 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BoardCardAdapter.OnItemClicklistener {
 
     private RecyclerView recyclerView;
     private BoardCardAdapter boardCardAdapter;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                             boardCardAdapter = new BoardCardAdapter(MainActivity.this, boardCardArrayList);
                             recyclerView.setAdapter(boardCardAdapter);
 
+                            boardCardAdapter.setOnItemClickListener(MainActivity.this);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -79,5 +82,11 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue.add(request);
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        BoardCard clickedBoard = boardCardArrayList.get(position);
+        Toast.makeText(getApplicationContext(), clickedBoard.getBoardname(),Toast.LENGTH_LONG).show();
     }
 }
